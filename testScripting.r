@@ -16,14 +16,14 @@ twoz_att <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2z-att.o
 
 #Compute new statistics: Attendance (TO BE GENERALIZED WITH ID VARIABLES)
 #
-#For now, these two lines take the average of the attendance calculated
+#
+#Daily Averages (this is just for me, this is probably junk code)
+dailyMeanAttendance_onex<-data.frame(colMeans(onex_att[c(6:length(onex_att))], na.rm=T))
+dailyMeanAttendance_twoz<-data.frame(colMeans(twoz_att[c(6:length(twoz_att))], na.rm=T))
+
+#For now, these next two lines take the average of the attendance calculated
 #from line 6 and out to the ends of their respective data frames, appending
 #a new column on the end of the data frame with the new statistic for average
 #attendance by student.
-onex_att$meanAttendanceDaily <- rowMeans(onex_att[,c(6:length(onex_att))], na.rm=TRUE)
-twoz_att$meanAttendanceDaily <- rowMeans(twoz_att[,c(6:length(twoz_att))], na.rm=TRUE)
-
-#Daily Averages (this is just for me, this is probably junk code)
-colMeans(onex_att[c(6:length(onex_att))], na.rm=T)
-colMeans(twoz_att[c(6:length(twoz_att))], na.rm=T)
-
+onex_att$meanAttendance <- rowMeans(onex_att[,c(6:length(onex_att))], na.rm=TRUE)
+twoz_att$meanAttendance <- rowMeans(twoz_att[,c(6:length(twoz_att))], na.rm=TRUE)
