@@ -9,6 +9,7 @@ comprehensive support.
 Necessary packages (to be updated):
   tidyverse
   readODS
+  rtools
 
 and their dependencies, including:
   libxml2
