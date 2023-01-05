@@ -24,6 +24,6 @@ dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance[c(6:length
 
 #For now, these next two lines take the average of the attendance calculated
 #from line 6 and out to the ends of their respective data frames and creates a
-#new data frame housing the total attendence data by-student.
+#rmnew data frame housing the total attendence data by-student.
 meanAttendanceByStudent_classOne <- data.frame(rowMeans(classOne_attendance[,c(6:length(classOne_attendance))], na.rm=TRUE))
 meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance[,c(6:length(classTwo_attendance))], na.rm=TRUE))
