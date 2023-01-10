@@ -2,6 +2,7 @@
 #packages
 library(tidyverse)
 library(readODS)
+library(ggplot2)
 
 #Loading in working data from working directory. Will require an edit depending
 #on the placement of the working data files in the experimenter's filesystem.
@@ -24,6 +25,19 @@ dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance[c(6:length
 
 #For now, these next two lines take the average of the attendance calculated
 #from line 6 and out to the ends of their respective data frames and creates a
-#rmnew data frame housing the total attendence data by-student.
+#rmnew data frame housing the total attendance data by-student.
 meanAttendanceByStudent_classOne <- data.frame(rowMeans(classOne_attendance[,c(6:length(classOne_attendance))], na.rm=TRUE))
 meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance[,c(6:length(classTwo_attendance))], na.rm=TRUE))
+
+
+#Calculate the correlation between attendance and final grades in each class.
+#The final grade is the 95th column in both dataframes, whereas the mean
+#attendance has but one column. As of the sampling data on 7 January 2023,
+#we can see that class one has a moderate positive correlation whereas class
+#two has a positive but rather weak correlation between tutorial attendance and
+#final marks (~0.621 and ~0.158, respectively).
+#
+cor(classOne_grades[95],meanAttendanceByStudent_classOne[1])
+cor(classTwo_grades[95],meanAttendanceByStudent_classTwo[1])
+
+#Plot some figures just for fun
