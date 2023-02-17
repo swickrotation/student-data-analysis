@@ -20,28 +20,48 @@ classTwo_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2
 #
 #
 #Daily Averages (this is just for me, this is probably junk code)
-dailyMeanAttendance_classOne<-data.frame(colMeans(classOne_attendance[c(6:length(classOne_attendance))], na.rm=T))
-colnames(dailyMeanAttendance_classOne)[1]  <- "Daily Mean Attendance"
-dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance[c(6:length(classTwo_attendance))], na.rm=T))
-colnames(dailyMeanAttendance_classTwo)[1]  <- "Daily Mean Attendance"
+##dailyMeanAttendance_classOne<-data.frame(colMeans(classOne_attendance[c(6:length(classOne_attendance))], na.rm=T))
+##colnames(dailyMeanAttendance_classOne)[1]  <- "Daily Mean Attendance"
+##dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance[c(6:length(classTwo_attendance))], na.rm=T))
+##colnames(dailyMeanAttendance_classTwo)[1]  <- "Daily Mean Attendance"
 
 #For now, these next two lines take the average of the attendance calculated
 #from line 6 and out to the ends of their respective data frames and creates a
-#rmnew data frame housing the total attendance data by-student.
+#new data frame housing the total attendance data by-student. We also
+#consolidate the data to a single frame for ease of use using the column bind
+#function available in the base package of R.
 meanAttendanceByStudent_classOne <- data.frame(rowMeans(classOne_attendance[,c(6:length(classOne_attendance))], na.rm=TRUE))
 colnames(meanAttendanceByStudent_classOne)[1] <- "Mean Attendance by Student"
+classOneData <- cbind(classOne_grades, meanAttendanceByStudent_classOne, by="Mean Attendance by Student")
+
 meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance[,c(6:length(classTwo_attendance))], na.rm=TRUE))
 colnames(meanAttendanceByStudent_classTwo)[1] <- "Mean Attendance by Student"
+classTwoData <- cbind(classTwo_grades, meanAttendanceByStudent_classTwo)
 
 
 #Calculate the correlation between attendance and final grades in each class.
-#The final grade is the 95th column in both dataframes, whereas the mean
-#attendance has but one column. As of the sampling data on 7 January 2023,
-#we can see that class one has a moderate positive correlation whereas class
-#two has a positive but rather weak correlation between tutorial attendance and
-#final marks (~0.621 and ~0.158, respectively).
+#As of 16 February, 2023 the standing code takes inputs as the titles of the
+#columns in dataframes. The previous version required knowing which column in
+#the dataframe held the data you were looking for (i.e. counting out to the
+#95th column to find the total grade in percentage.) Attendance has but one 
+#column. As of the sampling data on 7 January 2023,we can see that class one has
+#a moderate positive correlation whereas class two has a positive but rather 
+#weak correlation between tutorial attendance and final marks (~0.621 and 
+#~0.158, respectively).
 #
-cor(classOne_grades[["Course total (Percentage)"]],meanAttendanceByStudent_classOne[["Mean Attendance by Student"]])
-cor(classTwo_grades[["Course total (Percentage)"]],meanAttendanceByStudent_classTwo[["Mean Attendance by Student"]])
+cor(classOneData[["Course total (Percentage)"]],classOneData[["Mean Attendance by Student"]])
+cor(classTwoData[["Course total (Percentage)"]],classTwoData[["Mean Attendance by Student"]])
 
 #Plot some figures just for fun
+
+plot(classOneData[["Mean Attendance by Student"]], classOneData[["Course total (Percentage)"]],
+     xlab = "x = Mean Attendance", ylab= "y =Course Average", main="Class One Average by Attendance with Linear Regression",)
+abline(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]]), col=2, lwd=1)
+coefClassOne <- signif(coef(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]])), digits=3)
+text(0.36, 0.3,  paste("y = ", coefClassOne[1], "+", coefClassOne[2], "x"))
+
+plot(classTwoData[["Mean Attendance by Student"]], classTwoData[["Course total (Percentage)"]],
+     xlab = "x = Mean Attendance", ylab= "y =Course Average", main="Class Two Average by Attendance with Linear Regression",)
+abline(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]]), col=2, lwd=1)
+coefClassTwo <- signif(coef(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]])), digits=3)
+text(0.41, 0.50,  paste("y = ", coefClassTwo[1], "+", coefClassTwo[2], "x"))
