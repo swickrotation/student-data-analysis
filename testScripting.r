@@ -21,13 +21,17 @@ classTwo_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2
 #
 #Daily Averages (this is just for me, this is probably junk code)
 dailyMeanAttendance_classOne<-data.frame(colMeans(classOne_attendance[c(6:length(classOne_attendance))], na.rm=T))
+colnames(dailyMeanAttendance_classOne)[1]  <- "Daily Mean Attendance"
 dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance[c(6:length(classTwo_attendance))], na.rm=T))
+colnames(dailyMeanAttendance_classTwo)[1]  <- "Daily Mean Attendance"
 
 #For now, these next two lines take the average of the attendance calculated
 #from line 6 and out to the ends of their respective data frames and creates a
 #rmnew data frame housing the total attendance data by-student.
 meanAttendanceByStudent_classOne <- data.frame(rowMeans(classOne_attendance[,c(6:length(classOne_attendance))], na.rm=TRUE))
+colnames(meanAttendanceByStudent_classOne)[1] <- "Mean Attendance by Student"
 meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance[,c(6:length(classTwo_attendance))], na.rm=TRUE))
+colnames(meanAttendanceByStudent_classTwo)[1] <- "Mean Attendance by Student"
 
 
 #Calculate the correlation between attendance and final grades in each class.
@@ -37,7 +41,7 @@ meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance[,c(6
 #two has a positive but rather weak correlation between tutorial attendance and
 #final marks (~0.621 and ~0.158, respectively).
 #
-cor(classOne_grades[95],meanAttendanceByStudent_classOne[1])
-cor(classTwo_grades[95],meanAttendanceByStudent_classTwo[1])
+cor(classOne_grades[["Course total (Percentage)"]],meanAttendanceByStudent_classOne[["Mean Attendance by Student"]])
+cor(classTwo_grades[["Course total (Percentage)"]],meanAttendanceByStudent_classTwo[["Mean Attendance by Student"]])
 
 #Plot some figures just for fun

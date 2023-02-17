@@ -1,11 +1,9 @@
 
 
     Obvious questions:
-        correlation between attendence and grade
+X        correlation between attendence and grade
         correspondence between grade and attendence on particular days
-        comparison between classes
-        correlation along whole group - substantive difference or no?
-        data visualizations
+            (TO BE DONE IN DATA VISUALIZATION)
 
 
 X    Turn data actually machine-readable. P/A not good format
