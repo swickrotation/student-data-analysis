@@ -12,8 +12,20 @@ library(ggplot2)
 #its associated subdirectories, being workingData, from which we load individual
 #files.
 
+
+#In the current framework, the attendance data is given with a mark of
+#presence or absence "P (1/1)" or "A (0/1)". I chaged those over in google
+#sheets to simple 1/0 to calculate the average attendance rate.
+
 classOne_attendance <- read_ods(path="~/gitrepos/student-data-analysis/workingData/1x-att.ods",sheet=1)
 classTwo_attendance <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2z-att.ods",sheet=1)
+
+#Similar to the above, the percentage scores given by the data aggregator have
+#spaces in between the % sign and the number, which makes R read the cell
+#entries as strings by default. This too was simply easier for me to change
+#before processing. I'm sure there's either some built-in regular expression
+#support in R but I could not be arsed to find it.
+
 classOne_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/1x-gra.ods",sheet=1)
 classTwo_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2z-gra.ods",sheet=1)
 
@@ -66,14 +78,14 @@ plot(classOneData[["Mean Attendance by Student"]],
      xlab = "x = Mean Attendance", 
      ylab= "y =Course Average", 
      main="Class One Average by Attendance with Linear Regression"
-    )
+)
 abline(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]]),
        col=2, 
        lwd=1
-      )
+)
 coefClassOne <- signif(coef(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]])),
                        digits=3
-                      )
+                )
 text(0.36, 0.3,  paste("y = ", coefClassOne[1], "+", coefClassOne[2], "x"))
 
 #Figure 2
@@ -82,17 +94,17 @@ plot(classTwoData[["Mean Attendance by Student"]],
      xlab = "x = Mean Attendance",
      ylab= "y =Course Average",
      main="Class Two Average by Attendance with Linear Regression"
-     )
+)
 
 
 abline(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]]),
        col=2,
        lwd=1
-       )
+)
 
 coefClassTwo <- signif(coef(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]])),
                        digits=3
-                       )
+                )
 
 text(0.41, 0.50,  paste("y = ", coefClassTwo[1], "+", coefClassTwo[2], "x"))
 
