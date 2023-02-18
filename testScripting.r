@@ -1,6 +1,8 @@
 
 #packages
 library(tidyverse)
+#not sure if I'm actually using this one but it's such a handy package that it's
+#worth importing anyway
 library(readODS)
 library(ggplot2)
 
@@ -52,16 +54,55 @@ classTwoData <- cbind(classTwo_grades, meanAttendanceByStudent_classTwo)
 cor(classOneData[["Course total (Percentage)"]],classOneData[["Mean Attendance by Student"]])
 cor(classTwoData[["Course total (Percentage)"]],classTwoData[["Mean Attendance by Student"]])
 
-#Plot some figures just for fun
+#PLOTS
+#
+#These first two figures plot the mean daily attendance each student by their
+#final performance in the course, and includes a linear regression line of best
+#fit.
 
-plot(classOneData[["Mean Attendance by Student"]], classOneData[["Course total (Percentage)"]],
-     xlab = "x = Mean Attendance", ylab= "y =Course Average", main="Class One Average by Attendance with Linear Regression",)
-abline(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]]), col=2, lwd=1)
-coefClassOne <- signif(coef(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]])), digits=3)
+#Figure 1
+plot(classOneData[["Mean Attendance by Student"]], 
+     classOneData[["Course total (Percentage)"]],
+     xlab = "x = Mean Attendance", 
+     ylab= "y =Course Average", 
+     main="Class One Average by Attendance with Linear Regression"
+    )
+abline(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]]),
+       col=2, 
+       lwd=1
+      )
+coefClassOne <- signif(coef(lm(classOneData[["Course total (Percentage)"]]~classOneData[["Mean Attendance by Student"]])),
+                       digits=3
+                      )
 text(0.36, 0.3,  paste("y = ", coefClassOne[1], "+", coefClassOne[2], "x"))
 
-plot(classTwoData[["Mean Attendance by Student"]], classTwoData[["Course total (Percentage)"]],
-     xlab = "x = Mean Attendance", ylab= "y =Course Average", main="Class Two Average by Attendance with Linear Regression",)
-abline(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]]), col=2, lwd=1)
-coefClassTwo <- signif(coef(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]])), digits=3)
+#Figure 2
+plot(classTwoData[["Mean Attendance by Student"]],
+     classTwoData[["Course total (Percentage)"]],
+     xlab = "x = Mean Attendance",
+     ylab= "y =Course Average",
+     main="Class Two Average by Attendance with Linear Regression"
+     )
+
+
+abline(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]]),
+       col=2,
+       lwd=1
+       )
+
+coefClassTwo <- signif(coef(lm(classTwoData[["Course total (Percentage)"]]~classTwoData[["Mean Attendance by Student"]])),
+                       digits=3
+                       )
+
 text(0.41, 0.50,  paste("y = ", coefClassTwo[1], "+", coefClassTwo[2], "x"))
+
+#These box-and-whisker figures show the average grades based on attendance on
+#particular days in class. We might expect that students who attended an exam
+#revision session would perform better on their finals than those who
+#missed the same.
+boxplot(
+  classOneData[["Course total (Percentage)"]]~classOne_attendance[["11 Nov 2022 12.00AM All students"]],
+  xlab="Presence",
+  ylab="Final Grade",
+  main="Comparative Final Average over Particular Attendance"
+)
