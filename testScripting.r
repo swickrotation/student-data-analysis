@@ -5,6 +5,7 @@ library(tidyverse)
 #worth importing anyway
 library(readODS)
 library(ggplot2)
+library(dplyr)
 
 #Loading in working data from working directory. Will require an edit depending
 #on the placement of the working data files in the experimenter's filesystem.
@@ -34,21 +35,24 @@ classTwo_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2
 #
 #
 #Daily Averages (this is just for me, this is probably junk code)
-##dailyMeanAttendance_classOne<-data.frame(colMeans(classOne_attendance[c(6:length(classOne_attendance))], na.rm=T))
+
+##dailyMeanAttendance_classOne<-data.frame(colMeans(classOne_attendance %>% select('26 Sep 2022 12.00AM All students':'16 Dec 2022 12.00AM All students')))
 ##colnames(dailyMeanAttendance_classOne)[1]  <- "Daily Mean Attendance"
-##dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance[c(6:length(classTwo_attendance))], na.rm=T))
+
+##dailyMeanAttendance_classTwo<-data.frame(colMeans(classTwo_attendance %>% select('26 Sep 2022 12.00AM All students':'15 Dec 2022 12.00AM All students')))
 ##colnames(dailyMeanAttendance_classTwo)[1]  <- "Daily Mean Attendance"
+
 
 #For now, these next two lines take the average of the attendance calculated
 #from line 6 and out to the ends of their respective data frames and creates a
 #new data frame housing the total attendance data by-student. We also
 #consolidate the data to a single frame for ease of use using the column bind
 #function available in the base package of R.
-meanAttendanceByStudent_classOne <- data.frame(rowMeans(classOne_attendance[,c(6:length(classOne_attendance))], na.rm=TRUE))
+meanAttendanceByStudent_classOne <- data.frame(rowMeans(classOne_attendance %>% select('26 Sep 2022 12.00AM All students':'16 Dec 2022 12.00AM All students')))
 colnames(meanAttendanceByStudent_classOne)[1] <- "Mean Attendance by Student"
 classOneData <- cbind(classOne_grades, meanAttendanceByStudent_classOne, by="Mean Attendance by Student")
 
-meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance[,c(6:length(classTwo_attendance))], na.rm=TRUE))
+meanAttendanceByStudent_classTwo <- data.frame(rowMeans(classTwo_attendance %>% select('26 Sep 2022 12.00AM All students':'15 Dec 2022 12.00AM All students')))
 colnames(meanAttendanceByStudent_classTwo)[1] <- "Mean Attendance by Student"
 classTwoData <- cbind(classTwo_grades, meanAttendanceByStudent_classTwo)
 

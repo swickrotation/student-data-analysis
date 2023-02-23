@@ -9,3 +9,8 @@ X        correspondence between grade and attendence on particular days
 X    Turn data actually machine-readable. P/A not good format
 X    Ask JMB what he wants
 X    download rstudio for ease's sake
+
+    20-02-2023 Meeting
+X        Remove Specific Column Calls for rowMeans, colMeans
+        Add baseline adjustment for boxplots
+        Add sub/qsub functionality for data pre-processing
