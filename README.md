@@ -9,9 +9,15 @@ comprehensive support.
 Necessary packages (to be updated):
   tidyverse
   readODS
-  rtools
 
-and their dependencies, including:
+--------------
+
+Useful to have but optional for code as-written:
+  rtools
+  dplyr
+  ggplot2
+
+The dependencies of the above include but may not be limited to:
   libxml2
   libxml2-dev
   openssl
