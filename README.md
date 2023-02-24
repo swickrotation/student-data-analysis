@@ -23,3 +23,13 @@ The dependencies of the above include but may not be limited to:
   openssl
   libssl-dev
   libcurl4-openssl-dev
+
+
+WORKFLOW:
+    The data is aggregated with some third-party software, I believe Moodle in
+    this case. While a handy utility, it does not provide data that is directly
+    usable in R without some pathological coding. I found it simpler to
+    pre-process the data from Moodle directly. For the workflow, this means
+    
+    -sending the data through preprocessing.r
+    -using testscripting.r for analysis

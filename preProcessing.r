@@ -4,7 +4,7 @@ library(readODS)
 library(dplyr)
 
 #We set the working directory to that from where we are loading the initial
-#dataframes
+#dataframes. This will be different on your machine.
 
 setwd("~/gitrepos/student-data-analysis/demodata/")
 
@@ -49,7 +49,8 @@ diff_classTwo <- anti_join(classTwo_grades, classTwo_attendance, by="Surname")
 classTwo_grades <- classTwo_grades[!(classTwo_grades$Surname %in% diff_classTwo$Surname),]
 
 #Having completed our pre-processing, we save the files to our working
-#directory
+#directory. You can now safely load the data and execute the code in
+#testcripting.r!
 
 save(classOne_attendance, file="classOne_attendance.ods")
 save(classOne_grades, file="classOne_grades.ods")
