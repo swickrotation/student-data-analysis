@@ -20,8 +20,8 @@ library(dplyr)
 #sheets to simple 1/0 to calculate the average attendance rate. As of 
 #23-02-2023, this can be handled in pre-processing using preProcessing.r. 
 
-classOne_attendance <- read_ods(path="~/gitrepos/student-data-analysis/workingData/1x-att.ods",sheet=1)
-classTwo_attendance <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2z-att.ods",sheet=1)
+classOne_attendance <- readRDS("~/gitrepos/student-data-analysis/demodata/classOne_attendance.Rda")
+classTwo_attendance <- readRDS("~/gitrepos/student-data-analysis/demodata/classTwo_attendance.Rda")
 
 #Similar to the above, the percentage scores given by the data aggregator have
 #spaces in between the % sign and the number, which makes R read the cell
@@ -29,8 +29,8 @@ classTwo_attendance <- read_ods(path="~/gitrepos/student-data-analysis/workingDa
 #before processing. I'm sure there's either some built-in regular expression
 #support in R but I could not be arsed to find it.
 
-classOne_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/1x-gra.ods",sheet=1)
-classTwo_grades <- read_ods(path="~/gitrepos/student-data-analysis/workingData/2z-gra.ods",sheet=1)
+classOne_grades <- readRDS("~/gitrepos/student-data-analysis/demodata/classOne_grades.Rda")
+classTwo_grades <- readRDS("~/gitrepos/student-data-analysis/demodata/classTwo_grades.Rda")
 
 
 #Compute new statistics: Attendance (TO BE GENERALIZED WITH ID VARIABLES)

@@ -2,7 +2,6 @@
 #import libraries
 library(readODS)
 library(dplyr)
-library(readr)
 
 #We set the working directory to that from where we are loading the initial
 #dataframes. This will be different on your machine.
@@ -117,8 +116,8 @@ classTwo_grades <- classTwo_grades %>% mutate_if(is.percentage, ~as.numeric(sub(
 #directory. You can now safely load the data and execute the code in
 #testcripting.r!
 
-save(classOne_attendance, file="classOne_attendance.ods")
-save(classOne_grades, file="classOne_grades.ods")
+saveRDS(classOne_attendance, file="classOne_attendance.Rda")
+saveRDS(classOne_grades, file="classOne_grades.Rda")
 
-save(classTwo_attendance, file="classTwo_attendance.ods")
-save(classTwo_grades, file="classTwo_grades.ods")
+saveRDS(classTwo_attendance, file="classTwo_attendance.Rda")
+saveRDS(classTwo_grades, file="classTwo_grades.Rda")
