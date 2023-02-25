@@ -49,6 +49,17 @@ classOne_grades <- classOne_grades[!(classOne_grades$Surname %in% diff_classOne$
 diff_classTwo <- anti_join(classTwo_grades, classTwo_attendance, by="Surname")
 classTwo_grades <- classTwo_grades[!(classTwo_grades$Surname %in% diff_classTwo$Surname),]
 
+#We rename the rows of the class two grades as for some reason the extraneous
+#students are misaligned between these two sets. Probably doesn't effect
+#anything, but just for consistency, we write (for all of them, just to
+#generalise)
+
+row.names(classOne_attendance) <- c(1:nrow(classOne_attendance))
+row.names(classTwo_attendance) <- c(1:nrow(classTwo_attendance))
+row.names(classOne_grades) <- c(1:nrow(classOne_grades))
+row.names(classTwo_grades) <- c(1:nrow(classTwo_grades))
+
+
 #Next up is removing the spaces between the % symbols and the numbers they
 #should be attached to. If we didn't do this, our calculations in testScripting
 #would treat those cell values as strings --- a little harder to perform
