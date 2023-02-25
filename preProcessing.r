@@ -2,6 +2,7 @@
 #import libraries
 library(readODS)
 library(dplyr)
+library(readr)
 
 #We set the working directory to that from where we are loading the initial
 #dataframes. This will be different on your machine.
@@ -47,6 +48,59 @@ classOne_grades <- classOne_grades[!(classOne_grades$Surname %in% diff_classOne$
 
 diff_classTwo <- anti_join(classTwo_grades, classTwo_attendance, by="Surname")
 classTwo_grades <- classTwo_grades[!(classTwo_grades$Surname %in% diff_classTwo$Surname),]
+
+#Next up is removing the spaces between the % symbols and the numbers they
+#should be attached to. If we didn't do this, our calculations in testScripting
+#would treat those cell values as strings --- a little harder to perform
+#calculations on those!
+
+classOne_grades[] <- lapply(classOne_grades, gsub, pattern=" %", replacement="%", fixed=TRUE)
+classTwo_grades[] <- lapply(classTwo_grades, gsub, pattern=" %", replacement="%", fixed=TRUE)
+
+#Now the last, and likely trickiest part. The data provided from the aggregator
+#is not typed correctly on import --- all the columns with numbers in them are
+#values as characters. We need to fix that in order to actually compute the
+#desired statistics. This is straightforward for the attendance records as those
+#are complete from import.
+
+classOne_attendance[] <- lapply(classOne_attendance, function(x) {
+  x1 <- type.convert(as.character(x))
+    if(is.factor(x1))
+      as.character(x1) else x1
+})
+
+classTwo_attendance[] <- lapply(classTwo_attendance, function(x) {
+  x1 <- type.convert(as.character(x))
+  if(is.factor(x1))
+    as.character(x1) else x1
+})
+
+#The grade records need some extra processing to turn the dashes into zeroes for
+#the purposes of our assessment. In the way we have written here, it should not
+#alter any hyphenated names.
+classOne_grades[] <- lapply(classOne_grades, function(x) {gsub("^-$","0",x)})
+classTwo_grades[] <- lapply(classTwo_grades, function(x) {gsub("^-$","0",x)})
+
+#Now we attempt to numericise the grade columns.
+
+classOne_grades[] <- lapply(classOne_grades, function(x) {
+  x1 <- type.convert(as.character(x))
+  if(is.factor(x1))
+    as.character(x1) else x1
+})
+
+classTwo_grades[] <- lapply(classTwo_grades, function(x) {
+  x1 <- type.convert(as.character(x))
+  if(is.factor(x1))
+    as.character(x1) else x1
+})
+
+#We define a function to pass over the percentages
+is.percentage <- function(x) any(grepl("%$", x))
+
+#We use that function now to turn those percentages into decimals
+classOne_grades <- classOne_grades %>% mutate_if(is.percentage, ~as.numeric(sub("%", "", .))/100)
+classTwo_grades <- classTwo_grades %>% mutate_if(is.percentage, ~as.numeric(sub("%", "", .))/100)
 
 #Having completed our pre-processing, we save the files to our working
 #directory. You can now safely load the data and execute the code in

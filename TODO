@@ -14,6 +14,6 @@ X    download rstudio for ease's sake
 X        Remove Specific Column Calls for rowMeans, colMeans
         Add baseline adjustment for boxplots
 X        Remove extraneous data (dropped students, late registers)
-        Add sub/qsub functionality for data pre-processing
-            Align attendance data with grade data --- currently not matcing
-            col. length
+X        Add sub/qsub functionality for data pre-processing
+X            Align attendance data with grade data
+X        Turn numbers into numeric type
