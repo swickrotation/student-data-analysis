@@ -9,12 +9,12 @@ comprehensive support.
 Necessary packages (to be updated):
   tidyverse
   readODS
+  effsize
+  dplyr
 
 --------------
 
 Useful to have but optional for code as-written:
-  rtools
-  dplyr
   ggplot2
 
 The dependencies of the above include but may not be limited to:
@@ -23,6 +23,11 @@ The dependencies of the above include but may not be limited to:
   openssl
   libssl-dev
   libcurl4-openssl-dev
+  rtools*
+
+
+* may only be necessary to avoid warning messages about not being able to
+  compile from sourcecode
 
 
 WORKFLOW:
