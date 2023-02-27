@@ -3,7 +3,7 @@
     Obvious questions:
 X        correlation between attendence and grade
 X        correspondence between grade and attendence on particular days
-            (TO BE DONE IN DATA VISUALIZATION)
+X            (TO BE DONE IN DATA VISUALIZATION)
 
 
 X    Turn data actually machine-readable. P/A not good format
@@ -12,8 +12,8 @@ X    download rstudio for ease's sake
 
     20-02-2023 Meeting
 X        Remove Specific Column Calls for rowMeans, colMeans
-        Add Cohen distance calculation for boxplot
-        Implement multilinear regressions and plots in testscripting
+X        Add Cohen distance calculation for boxplot
+X        Implement multilinear regressions and plots in testscripting
 X        Remove extraneous data (dropped students, late registers)
 X        Add sub/qsub functionality for data pre-processing
 X            Align attendance data with grade data
