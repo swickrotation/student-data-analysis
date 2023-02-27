@@ -1,12 +1,21 @@
 
+#Code and comments by W.S. Gertler (@swickrotation on all socials and GitHub)
+#at the behest of J.M. Beirne, whose insightful discussion was paramount in 
+#directing these efforts. 27-02-23.
+
+
+#N.B. This code relies on the package dplyr, which was imported and used in the
+#preprocessing step. If that has not been done, do that first, or import it
+#manually and run.
+
 # Import packages
 library(tidyverse)
 library(readODS)
+library(effsize)
 
-#not sure if I'm actually using these ones but they are generally handy to have
-#and thus are worth importing anyway
-library(ggplot2)
-library(dplyr)
+#I'm not actually using these ones but they are generally handy to have and so
+#I'll include them (commented out) for later use, if necessary or desired.
+#library(ggplot2)
 
 #Loading in working data from working directory. Will require an edit depending
 #on the placement of the working data files in the experimenter's filesystem.
@@ -62,6 +71,8 @@ colnames(meanAttendanceByStudent_classTwo)[1] <- "Mean Attendance by Student"
 classTwoData <- cbind(classTwo_grades, meanAttendanceByStudent_classTwo)
 
 
+#MODELS & ANALYSIS
+
 #Calculate the correlation between attendance and final grades in each class.
 #As of 16 February, 2023 the standing code takes inputs as the titles of the
 #columns in dataframes. The previous version required knowing which column in
@@ -74,6 +85,46 @@ classTwoData <- cbind(classTwo_grades, meanAttendanceByStudent_classTwo)
 #
 cor(classOneData[["Course total (Percentage)"]],classOneData[["Mean Attendance by Student"]])
 cor(classTwoData[["Course total (Percentage)"]],classTwoData[["Mean Attendance by Student"]])
+
+#Here is a sample linear regression of the final grade and its correspondence
+#with total class attendance.
+linearGrade <- lm(classOneData[["Course total (Percentage)"]] ~ classOneData[["Mean Attendance by Student"]])
+
+#Here's a sample multiple linear model:
+multiLinear_grade <- lm(
+  classOneData[["Course total (Percentage)"]] ~ classOneData[["Mean Attendance by Student"]]
+  + classOneData[["low stakes writing total (Percentage)"]]
+  + classOneData[["Information Literacy Quiz total (Percentage)"]]
+  + classOne_attendance[["30 Nov 2022 12.00AM All students"]]
+)
+
+
+#We can test to see whether or not the multiple linear model is a better
+#predictor of the final outcome than the single using an analysis of variance
+#(ANOVA) test:
+anovaTest1 <- anova(linearGrade, multiLinear_grade)
+
+#N.B. In the example using the code as-written on 27-02/2023, the ANOVA test
+#tells us that the multiple linear model, having a quite small p-value, is not
+#significantly better than the simpler single linear model. We can also see that
+#from summarising the data, that the majorly effective predictor in the final
+#grade is the result on the low-stakes writing test while the rest are not
+#significant contributors to the prediction. There are more advanced techniques
+#to picking relevant factors like AIC, but that's likely overkill for now.
+
+#We may also wish to compare an analysis of the difference between two classes.
+#We use a Welch t-test to do this because with a t-test we need not assume and
+#prior known average nor that the number of students in our class size is
+#"large".
+outcomeTest <- t.test(classOneData[["Course total (Percentage)"]],
+                      classTwoData[["Course total (Percentage)"]],
+                      paired=FALSE)
+
+#Having seen whether or not the difference is significant to our standards, we
+#can directly quantify the distance using the Cohen formula:
+cohen.d(classOneData[["Course total (Percentage)"]],
+        classTwoData[["Course total (Percentage)"]]
+)
 
 #PLOTS
 #
@@ -117,14 +168,6 @@ coefClassTwo <- signif(coef(lm(classTwoData[["Course total (Percentage)"]]~class
 
 text(0.41, 0.50,  paste("y = ", coefClassTwo[1], "+", coefClassTwo[2], "x"))
 
-#The above is a linear regression. We can also produce a multiple linear 
-#regression analysis without difficulty- though plotting it is slightly more
-#complicated due to the high dimensionality.
-
-multiLinear_Grade <- lm(
-  classOneData[["Course total (Percentage)"]] ~ classOneData[["Mean Attendance by Student"]]
-)
-
 
 #These box-and-whisker figures show the average grades based on attendance on
 #particular days in class. We might expect that students who attended an exam
@@ -136,3 +179,10 @@ boxplot(
   ylab="Final Grade",
   main="Comparative Final Average over Particular Attendance"
 )
+
+#The above is a linear regression. We can also produce multiple linear
+#regression plots without difficulty much difficulty, though the interpretation
+#of the results is a little more complicated. This code will provide 4 plots,
+#each carrying its own information. If we left out the ask argument, it would
+#need a user imput to generate each plot.
+plot(multiLinear_grade, ask=FALSE)

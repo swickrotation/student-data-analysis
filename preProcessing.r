@@ -1,4 +1,9 @@
 
+#Code and comments by W.S. Gertler (@swickrotation on all socials and GitHub)
+#at the behest of J.M. Beirne, whose insightful discussion was paramount in 
+#directing these efforts. 27-02-23.
+
+
 #import libraries
 library(readODS)
 library(dplyr)
@@ -71,8 +76,10 @@ classTwo_grades[] <- lapply(classTwo_grades, gsub, pattern=" %", replacement="%"
 #is not typed correctly on import --- all the columns with numbers in them are
 #values as characters. We need to fix that in order to actually compute the
 #desired statistics. This is straightforward for the attendance records as those
-#are complete from import.
-
+#are complete from import. The code below reads each column and returns a column
+#of characters if the contents are non-numeric. If they are numeric, they simply
+#return the column itself which is a numeric by default. This takes care of the
+#integer columns.
 classOne_attendance[] <- lapply(classOne_attendance, function(x) {
   x1 <- type.convert(as.character(x))
     if(is.factor(x1))
@@ -91,8 +98,8 @@ classTwo_attendance[] <- lapply(classTwo_attendance, function(x) {
 classOne_grades[] <- lapply(classOne_grades, function(x) {gsub("^-$","0",x)})
 classTwo_grades[] <- lapply(classTwo_grades, function(x) {gsub("^-$","0",x)})
 
-#Now we attempt to numericise the grade columns.
-
+#Now we attempt to numericise the grade columns. The code below only works to
+#convert pure number columns, so our percentages will need some further fixing.
 classOne_grades[] <- lapply(classOne_grades, function(x) {
   x1 <- type.convert(as.character(x))
   if(is.factor(x1))
@@ -105,10 +112,14 @@ classTwo_grades[] <- lapply(classTwo_grades, function(x) {
     as.character(x1) else x1
 })
 
-#We define a function to pass over the percentages
+#We define a function to pass over the percentages. This assigns the property
+#"is.percentage" to any cell with contents ending in the symbol "%".
 is.percentage <- function(x) any(grepl("%$", x))
 
-#We use that function now to turn those percentages into decimals
+#We use that function now to turn those percentages into decimals. The factor of
+#division by 100 gives us a scaling where 100% on an assignment would yield a 1.
+#You can safely remove this, it will just change the scale on the dependent axis
+#of the graphs but none of the underlying relations will change.
 classOne_grades <- classOne_grades %>% mutate_if(is.percentage, ~as.numeric(sub("%", "", .))/100)
 classTwo_grades <- classTwo_grades %>% mutate_if(is.percentage, ~as.numeric(sub("%", "", .))/100)
 
