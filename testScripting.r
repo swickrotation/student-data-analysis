@@ -117,6 +117,15 @@ coefClassTwo <- signif(coef(lm(classTwoData[["Course total (Percentage)"]]~class
 
 text(0.41, 0.50,  paste("y = ", coefClassTwo[1], "+", coefClassTwo[2], "x"))
 
+#The above is a linear regression. We can also produce a multiple linear 
+#regression analysis without difficulty- though plotting it is slightly more
+#complicated due to the high dimensionality.
+
+multiLinear_Grade <- lm(
+  classOneData[["Course total (Percentage)"]] ~ classOneData[["Mean Attendance by Student"]]
+)
+
+
 #These box-and-whisker figures show the average grades based on attendance on
 #particular days in class. We might expect that students who attended an exam
 #revision session would perform better on their finals than those who

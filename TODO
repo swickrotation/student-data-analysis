@@ -12,7 +12,8 @@ X    download rstudio for ease's sake
 
     20-02-2023 Meeting
 X        Remove Specific Column Calls for rowMeans, colMeans
-        Add baseline adjustment for boxplots
+        Add Cohen distance calculation for boxplot
+        Implement multilinear regressions and plots in testscripting
 X        Remove extraneous data (dropped students, late registers)
 X        Add sub/qsub functionality for data pre-processing
 X            Align attendance data with grade data
