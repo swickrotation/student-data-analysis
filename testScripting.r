@@ -25,7 +25,7 @@ library(effsize)
 
 
 #In the current framework, the attendance data is given with a mark of
-#presence or absence "P (1/1)" or "A (0/1)". I chaged those over in google
+#presence or absence "P (1/1)" or "A (0/1)". I changed those over in google
 #sheets to simple 1/0 to calculate the average attendance rate. As of 
 #23-02-2023, this can be handled in pre-processing using preProcessing.r. 
 
@@ -178,6 +178,22 @@ boxplot(
   xlab="Presence",
   ylab="Final Grade",
   main="Comparative Final Average over Particular Attendance"
+)
+
+#Histograms are a standard visualization tool, particularly for the detection of
+#the influence of outside factors effecting the distribution (i.e. bimodal
+#distributions tend to reflect that some students may have had an unfair advantage
+#or disadvantage.) We can instantiate a histogram thusly:
+hist(
+  classOneData[["Course total (Percentage)"]],
+  main = "Grade Distribution, Class One",
+  xlab = "Grade/100"
+)
+
+hist(
+  classTwoData[["Course total (Percentage)"]],
+  main = "Grade Distribution, Class Two",
+  xlab = "Grades/100"
 )
 
 #The above is a linear regression. We can also produce multiple linear
